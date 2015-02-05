@@ -1,5 +1,5 @@
 # unsplash-scrape
-Quick 'n dirty script to download all the images from unsplash.com.
+Quick 'n dirty script to download all the images from https://unsplash.com.
 
 ## Usage
 
