@@ -25,6 +25,6 @@ You can run the script with optional flags as:
 node unsplash --folder=images/ --start=12
 ```
 ### Optional flags:
-* --folder - Directory where the images will be downloaded. Defaults to `img/`
+* --folder - Relative directory where the images will be downloaded. Defaults to `img/`
 * --start - From which page should the script start downloading. Defaults to `1`
 * --end - At which page should the script stop downloading. By default it downloads until no more images are available
