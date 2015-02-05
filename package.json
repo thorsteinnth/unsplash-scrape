@@ -1,0 +1,20 @@
+{
+  "name": "unsplash-scrape",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/crisbeto/unsplash-scrape.git"
+  },
+  "version": "1.0.0",
+  "description": "Downloads all the images from unsplash.com",
+  "main": "unsplash.js",
+  "dependencies": {
+    "minimist": "^1.1.0",
+    "mkdirp": "^0.5.0",
+    "request": "^2.53.0",
+    "phantom": "^0.7.2"
+  },
+  "devDependencies": {},
+  "author": "crisbeto",
+  "homepage": "https://github.com/crisbeto/unsplash-scrape",
+  "license": "MIT"
+}
