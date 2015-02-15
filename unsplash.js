@@ -8,7 +8,7 @@ var currentPage =   args.start || 1;
 var maxPage =       args.end || false;
 
 var getImages = function() {
-    var photos = document.querySelectorAll('.js-photo');
+    var photos = document.querySelectorAll('.js-photo, .js-fluid-image');
     var out = [];
 
     Array.prototype.forEach.call(photos, function(current){
