@@ -3,6 +3,7 @@ var phantom =       require('phantom');
 var fs =            require('fs');
 var request =       require('request');
 var mkdirp =        require('mkdirp');
+var progressbar =   require('progress');
 var folder =        args.folder || 'img/';
 var currentPage =   args.start || 1;
 var maxPage =       args.end || false;
@@ -14,7 +15,7 @@ var getImages = function() {
     Array.prototype.forEach.call(photos, function(current){
         if(current){
             out.push(current.src);
-        };
+        }
     });
 
     return out;
@@ -38,7 +39,7 @@ var prepareImages = function(arr, page){
 
         if(filename.indexOf(format) === -1){
             filename += "." + format;
-        };
+        }
 
         filename = new Date().getTime() + "-" + filename; // so we dont get any duplicates
 
@@ -66,31 +67,34 @@ var downloadPage = function(index){
                     var images = prepareImages(result, currentPage);
                     var done = 0;
                     var total = images.length;
+                    var bar = new progressbar('Downloading page ' + currentPage + ' [:bar] :percent', {
+                        total: total
+                    });
+
                     var download = function(){
 
                         if(done >= total){
-                            console.log('Done with page ' + currentPage);
+                            bar.terminate();
 
                             currentPage++;
 
                             downloadPage(currentPage);
 
                             return ph.exit();
-                        };
+                        }
 
-                        downloadImage(images[done], function(){
-                            console.log((++done) + " of " + total);
+                        downloadImage(images[done++], function(){
+                            bar.tick();
                             download();
                         });
                     };
 
                     if(allowPage(images)){
-                        console.log('Starting page ' + index);
                         download();
                     }else{
                         console.log('Done with everything');
                         process.exit();
-                    };
+                    }
                 });
             });
         });

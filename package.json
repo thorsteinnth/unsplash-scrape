@@ -10,8 +10,9 @@
   "dependencies": {
     "minimist": "^1.1.0",
     "mkdirp": "^0.5.0",
-    "request": "^2.53.0",
-    "phantom": "^0.7.2"
+    "phantom": "^0.7.2",
+    "progress": "^1.1.8",
+    "request": "^2.53.0"
   },
   "devDependencies": {},
   "author": "crisbeto",
