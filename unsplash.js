@@ -1,5 +1,6 @@
 var args =          require('minimist')(process.argv.slice(2));
-var phantom =       require('phantom');
+var cheerio =       require('cheerio');
+var request =       require('request');
 var fs =            require('fs');
 var request =       require('request');
 var mkdirp =        require('mkdirp');
@@ -8,24 +9,9 @@ var folder =        args.folder || 'img/';
 var currentPage =   args.start || 1;
 var maxPage =       args.end || false;
 
-var getImages = function() {
-    var photos = document.querySelectorAll('.js-photo, .js-fluid-image');
-    var out = [];
-
-    Array.prototype.forEach.call(photos, function(current){
-        if(current){
-            out.push(current.src);
-        }
-    });
-
-    return out;
-};
-
 var allowPage = function(page){
     if(!page.length) return false;
-
     if(maxPage) return currentPage <= maxPage;
-
     return true;
 };
 
@@ -60,44 +46,36 @@ var downloadImage = function(image, callback){
 };
 
 var downloadPage = function(index){
-    phantom.create(function (ph) {
-        ph.createPage(function (page) {
-            page.open('https://unsplash.com/grid?page=' + index, function (status) {
-                page.evaluate(getImages, function (result) {
-                    var images = prepareImages(result, currentPage);
-                    var done = 0;
-                    var total = images.length;
-                    var bar = new progressbar('Downloading page ' + currentPage + ' [:bar] :percent', {
-                        total: total
-                    });
-
-                    var download = function(){
-
-                        if(done >= total){
-                            bar.terminate();
-
-                            currentPage++;
-
-                            downloadPage(currentPage);
-
-                            return ph.exit();
-                        }
-
-                        downloadImage(images[done++], function(){
-                            bar.tick();
-                            download();
-                        });
-                    };
-
-                    if(allowPage(images)){
-                        download();
-                    }else{
-                        console.log('Done with everything');
-                        process.exit();
-                    }
-                });
-            });
+    request({ uri: 'https://unsplash.com/grid?page=' + index }, function(error, response, body) {
+        var $ = cheerio.load(body);
+        var images = prepareImages($('.js-photo, .js-fluid-image').map(function(){
+            return $(this).attr('src');
+        }).get(), currentPage);
+        var done = 0;
+        var total = images.length;
+        var bar = new progressbar('Downloading page ' + currentPage + ' [:bar] :percent', {
+            total: total
         });
+
+        var download = function(){
+            if(done >= total){
+                bar.terminate();
+                currentPage++;
+                downloadPage(currentPage);
+            }else{
+               downloadImage(images[done++], function(){
+                   bar.tick();
+                   download();
+               });
+            }
+        };
+
+        if(allowPage(images)){
+            download();
+        }else{
+            console.log('Done with everything');
+            process.exit();
+        }
     });
 };
 

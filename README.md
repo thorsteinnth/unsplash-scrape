@@ -7,11 +7,6 @@ Quick 'n dirty script to download all the images from https://unsplash.com.
 ```
 npm install
 ```
-##### Warning!
-If you're on Windows, using Visual Studio 2013 and you're getting errors while installing the dependencies, you need to install the dependencies with the msvs_version flag:
-```
-npm install --msvs_version=2013
-```
 
 ### Running
 In the directory of the repo, run:
