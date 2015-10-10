@@ -46,9 +46,9 @@ var downloadImage = function(image, callback){
 };
 
 var downloadPage = function(index){
-    request({ uri: 'https://unsplash.com/grid?page=' + index }, function(error, response, body) {
+    request({ uri: 'https://unsplash.com/?page=' + index }, function(error, response, body) {
         var $ = cheerio.load(body);
-        var images = prepareImages($('.js-photo, .js-fluid-image').map(function(){
+        var images = prepareImages($('.js-photo, .js-fluid-image, .photo').map(function(){
             return $(this).attr('src');
         }).get(), currentPage);
         var done = 0;
