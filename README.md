@@ -1,5 +1,4 @@
 # unsplash-scrape
-Quick 'n dirty script to download all the images from https://unsplash.com.
 
 ## Usage
 
@@ -11,15 +10,17 @@ npm install
 ### Running
 In the directory of the repo, run:
 ```
-node unsplash
+node unsplash --url=[URL to download from]
+```
+Example:
+```
+node unsplash --url=https://unsplash.com/collections/296586/iceland
 ```
 
 ### Flags
 You can run the script with optional flags as:
 ```
-node unsplash --folder=images/ --start=12
+node unsplash --folder=images/
 ```
 ### Optional flags:
-* --folder - Relative directory where the images will be downloaded. Defaults to `img/`
-* --start - From which page should the script start downloading. Defaults to `1`
-* --end - At which page should the script stop downloading. By default it downloads until no more images are available
+* --folder - Relative directory where the images will be downloaded. Defaults to `dloaded_images/`
